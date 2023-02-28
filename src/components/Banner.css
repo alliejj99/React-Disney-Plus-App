@@ -51,7 +51,6 @@
 .banner__contents {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   min-width: 70%;
   height: 300px;
   margin: 40px;
