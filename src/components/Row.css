@@ -1,0 +1,123 @@
+.slider {
+  position: relative;
+}
+.slider__arrow-left {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+  width: 80px;
+  padding: 20px 0;
+  box-sizing: border-box;
+  transition: all 0.3s;
+  background-clip: content-box;
+  cursor: pointer;
+  z-index: 1000;
+}
+.slider__arrow-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+  width: 80px;
+  padding: 20px 0;
+  box-sizing: border-box;
+  transition: all 0.3s;
+  background-clip: content-box;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.arrow {
+  transition: all 0.3s;
+}
+.arrow:hover {
+  transform: scale(1.5);
+}
+.slider:hover .slider__arrow-left {
+  visibility: visible;
+}
+.slider:hover .slider__arrow-right {
+  visibility: visible;
+}
+.slider__arrow-left:hover {
+  background-color: rgba(20, 20, 20, 0.5);
+}
+.slider__arrow-right:hover {
+  background-color: rgba(20, 20, 20, 0.5);
+}
+
+.row__posters {
+  display: flex;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  padding: 20px 0 20px 20px;
+  scroll-behavior: smooth;
+}
+.row__posters::-webkit-scrollbar {
+  display: none;
+}
+.row__poster {
+  object-fit: contain;
+  width: 100%;
+  max-height: 144px;
+  margin-right: 10px;
+  transition: transform 450ms;
+  border-radius: 4px;
+}
+
+.row__poster:hover {
+  transform: scale(1.08);
+}
+.row__posterLarge {
+  max-height: 320px;
+}
+.row__posterLarge:hover {
+  transform: scale(1.1);
+  opacity: 1;
+}
+.row__arrow-left {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  width: 32px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.row__arrow-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  width: 32px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (min-width: 1200px) {
+  .row__poster {
+    max-height: 160px;
+  }
+  .row_posterLage {
+    max-height: 360px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .row__poster {
+    max-height: 100px;
+  }
+  .row_posterLage {
+    max-height: 280px;
+  }
+}
