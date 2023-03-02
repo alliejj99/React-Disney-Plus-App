@@ -19,7 +19,12 @@ function Row({ title, id, fetchUrl }) {
     <div>
       <h2>{title}</h2>
       <div className="slider">
-        <div className="slider__arrow-left">
+        <div
+          className="slider__arrow-left"
+          onClick={() => {
+            document.getElementById(id).scrollLeft -= window.innerWidth - 50;
+          }}
+        >
           <span className="arrow">{"<"}</span>
         </div>
 
@@ -38,7 +43,12 @@ function Row({ title, id, fetchUrl }) {
             })}
         </div>
 
-        <div className="slider__arrow-right">
+        <div
+          className="slider__arrow-right"
+          onClick={() => {
+            document.getElementById(id).scrollLeft += window.innerWidth - 50;
+          }}
+        >
           <span className="arrow">{">"}</span>
         </div>
       </div>

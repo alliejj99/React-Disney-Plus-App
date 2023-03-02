@@ -4,3 +4,13 @@
 - React.js
 - axios
 - styled-components
+- Slide
+  ```
+  <span
+    onClick={() => {
+      document.getElementById(id).scrollLeft -= window.innerWidth - 50;
+    }}
+  >
+    Slider
+  </span>
+  ```

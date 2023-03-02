@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "../api/axios";
 import requests from "../api/request";
@@ -8,11 +8,7 @@ const Banner = () => {
   const [movie, setMovie] = useState([]);
   const [isClicked, setIsClicked] = useState(false);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     // 현재 상영중인 영화 정보를 가져오기(여러 영화)
     const response = await axios.get(requests.fetchNowPlaying);
     // 여러 영화 중 영화 하나의 ID를 가져오기
@@ -27,11 +23,15 @@ const Banner = () => {
     });
 
     setMovie(movieDetail);
-  };
+  }, []);
 
-  const truncate = (str, n) => {
+  const truncate = useCallback((str, n) => {
     return str?.length > n ? str.substring(0, n) + "..." : str;
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   if (isClicked) {
     return (
