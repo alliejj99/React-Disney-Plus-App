@@ -4,6 +4,7 @@ body {
     font-family: Avenir-Roman, sans-serif;
     color: #f9f9f9;
     background-color: #040714;
+    cursor: default;
 }
 a {
     text-decoration: none;

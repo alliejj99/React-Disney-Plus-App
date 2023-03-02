@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./MovieModel.css";
 
 const MovieModel = ({
@@ -31,8 +31,8 @@ const MovieModel = ({
               {release_date ? release_date : first_air_date}
             </p>
             <h2 className="modal__title">{title ? title : name}</h2>
-            <p className="overview">평점: {vote_average}</p>
-            <p className="overview">{overview}</p>
+            <p className="modal__overview">평점: {vote_average}</p>
+            <p className="modal__overview">{overview}</p>
           </div>
         </div>
       </div>
