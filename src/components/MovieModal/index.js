@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./MovieModel.css";
 
 const MovieModel = ({
@@ -21,8 +21,8 @@ const MovieModel = ({
 
           <img
             src={`https://image.tmdb.org/t/p/original/${backdrop_path}`}
-            alt="modal__poser-img"
-            className="modal__poser-img"
+            alt="modal_poster-img"
+            className="modal_poster-img"
           />
 
           <div className="modal__content">
