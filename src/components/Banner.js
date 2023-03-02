@@ -31,7 +31,7 @@ const Banner = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   if (isClicked) {
     return (
