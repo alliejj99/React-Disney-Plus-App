@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -20,10 +19,9 @@ const Nav = () => {
   const handleChange = useCallback(
     (e) => {
       setSearchValue(e.target.value);
-      navigate(`/search/q=${e.target.value}`);
-      console.log(pathname);
+      navigate(`/search/q=?${e.target.value}`); // => search Page로 이동
     },
-    [navigate, pathname]
+    [navigate]
   );
 
   useEffect(() => {
