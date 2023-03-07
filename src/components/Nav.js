@@ -6,6 +6,7 @@ import {
   onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
+  signOut,
 } from "firebase/auth";
 
 const Nav = () => {
@@ -47,16 +48,17 @@ const Nav = () => {
         console.log(error);
       });
   }, []);
-  // const handleSignOut = () => {
-  //   signOut(auth)
-  //     .then(() => {
-  //       setUserData({});
-  //       navigate(`/`);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
+
+  const handleLogOut = () => {
+    signOut(auth)
+      .then(() => {
+        setUserData({});
+        navigate(`/`);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -91,13 +93,21 @@ const Nav = () => {
       {pathname === "/" ? (
         <LoginStyle onClick={() => handleAuth()}>Login</LoginStyle>
       ) : (
-        <InputStyle
-          value={searchValue}
-          onChange={handleChange}
-          className="nav__input"
-          type="text"
-          placeholder="Movie Search"
-        />
+        <React.Fragment>
+          <InputStyle
+            value={searchValue}
+            onChange={handleChange}
+            className="nav__input"
+            type="text"
+            placeholder="Movie Search"
+          />
+          <SignOut>
+            <UserImage src={userData.photoURL} alt={userData.displayName} />
+            <DropDown>
+              <span onClick={() => handleLogOut()}>Sign Out</span>
+            </DropDown>
+          </SignOut>
+        </React.Fragment>
       )}
     </NavWrapper>
   );
@@ -159,5 +169,38 @@ const LoginStyle = styled.a`
     border-color: tran;
     color: black;
     background-color: #f9f9f9;
+  }
+`;
+
+const UserImage = styled.img`
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+`;
+
+const DropDown = styled.div`
+  position: absolute;
+  top: 48px;
+  right: 0px;
+  padding: 10px;
+  background-color: rgb(19, 19, 19);
+  border: 1px solid rgba(151, 151, 151, 0.34);
+  border-radius: 4px;
+  box-shadow: rgb(0 0 0 /50%) 0px 0px 18px 0px;
+`;
+const SignOut = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+
+  &:hover {
+    ${DropDown} {
+      opacity: 1;
+      transition-duration: 1s;
+    }
   }
 `;
