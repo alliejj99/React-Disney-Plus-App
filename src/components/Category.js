@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-function Category() {
+const Category = () => {
   return (
     <Container>
       <Wrap>
@@ -11,7 +11,7 @@ function Category() {
         </video>
       </Wrap>
       <Wrap>
-        <img src="/images/viewers-marvel.png" alt="disney" />
+        <img src="/images/viewers-marvel.png" alt="marvel" />
         <video autoPlay loop muted>
           <source src="/videos/marvel.mp4" type="video/mp4" />
         </video>
@@ -36,7 +36,7 @@ function Category() {
       </Wrap>
     </Container>
   );
-}
+};
 
 export default Category;
 
@@ -58,7 +58,6 @@ const Wrap = styled.div`
     rgb(0 0 0 /73%) 0px 16px 10px -10px;
   cursor: pointer;
   transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s;
-
   img {
     position: absolute;
     display: block;
@@ -70,7 +69,6 @@ const Wrap = styled.div`
     inset: 0px;
     z-index: 1;
   }
-
   video {
     position: absolute;
     top: 0;
@@ -79,13 +77,11 @@ const Wrap = styled.div`
     opacity: 0;
     z-index: 0;
   }
-
   &:hover {
     box-shadow: rgb(0 0 0 /80%) 0px 40px 58px -16px,
       rgb(0 0 0 /72%) 0px 30px 22px -10px;
     transform: scale(1.05);
     border-color: rgba(249, 249, 249, 0.8);
-
     video {
       opacity: 1;
     }

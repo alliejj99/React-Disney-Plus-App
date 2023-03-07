@@ -1,67 +1,74 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDebounce } from "../../hooks/useDebounce";
 import axios from "../../api/axios";
+import { useDebounce } from "../../hooks/useDebounce";
 import "./SearchPage.css";
 
 const SearchPage = () => {
-  const [searchResults, setSearchResults] = useState([]);
   const navigate = useNavigate();
+  const [searchResults, setSearchResults] = useState([]);
+  const [InputValue, setInputValue] = useState("");
+  const location = useLocation();
 
-  const searchTerm = new URLSearchParams(useLocation().search);
-  const debounceSearchTerm = useDebounce(searchTerm, 500);
+  const searchTerm = InputValue;
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const fetchSearchMovies = useCallback(async (queryData) => {
+  const fetchSearchMovie = async (searchTerm) => {
     try {
       const response = await axios.get(
-        `/search/multi?include_adult=false&query=${queryData}`
+        `/search/multi?include_adult=false&query=${searchTerm}`
       );
       setSearchResults(response.data.results);
+      console.log("response", response);
     } catch (error) {
-      console.log("error");
+      console.log(error);
     }
-  }, []);
+  };
 
   useEffect(() => {
-    if (debounceSearchTerm) {
-      fetchSearchMovies(debounceSearchTerm);
-    }
-  }, [fetchSearchMovies, debounceSearchTerm]);
+    setInputValue(location.search);
+  }, [location]);
 
-  return (
-    <React.Fragment>
-      {searchResults.length > 0 ? (
-        <section className="search-container">
-          {searchResults.map((movie) => {
-            if (movie.backdrop_path !== null && movie.media_type !== "person") {
-              const movieImageUrl =
-                "https://image.tmdb.org/t/p/w500" + movie.backdrop_path;
-              return (
-                <div className="movie" key={movie.id}>
-                  <div
-                    className="movie__column-poster"
-                    onClick={() => navigate(`/${movie.id}`)}
-                  >
-                    <img
-                      src={movieImageUrl}
-                      alt="movie"
-                      className="movie__poster"
-                    />
-                  </div>
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      fetchSearchMovie(debouncedSearchTerm);
+    }
+  }, [debouncedSearchTerm]);
+
+  if (searchResults.length > 0) {
+    return (
+      <section className="search-container">
+        {searchResults.map((movie) => {
+          if (movie.backdrop_path !== null && movie.media_type !== "person") {
+            const movieImageUrl =
+              "https://image.tmdb.org/t/p/w500" + movie.backdrop_path;
+            return (
+              <div className="movie" key={movie.id}>
+                <div
+                  className="movie__column-poster"
+                  onClick={() => navigate(`/${movie.id}`)}
+                >
+                  <img
+                    src={movieImageUrl}
+                    alt="movie"
+                    className="movie__poster"
+                  />
                 </div>
-              );
-            }
-          })}
-        </section>
-      ) : (
-        <section className="no-results">
-          <div className="no-results-text">
-            <p>검색한 "{searchTerm}" 제목의 영화는 없습니다.</p>
-          </div>
-        </section>
-      )}
-    </React.Fragment>
-  );
+              </div>
+            );
+          }
+        })}
+      </section>
+    );
+  } else {
+    return (
+      <section className="no-results">
+        <div className="no-results__text">
+          <p>찾고자하는 검색어 "{searchTerm}" 에 맞는 영화가 없습니다.</p>
+        </div>
+      </section>
+    );
+  }
 };
 
 export default SearchPage;

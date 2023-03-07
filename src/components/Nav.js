@@ -1,20 +1,25 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import {
+  getAuth,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 
 const Nav = () => {
+  const initialUserData = localStorage.getItem("userData")
+    ? JSON.parse(localStorage.getItem("userData"))
+    : {};
+
+  const [show, setShow] = useState(false);
   const { pathname } = useLocation();
-  const [handleShow, setHandleShow] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const navigate = useNavigate();
-
-  const handleScroll = useCallback(() => {
-    if (window.scrollY > 50) {
-      setHandleShow(true);
-    } else {
-      setHandleShow(false);
-    }
-  }, []);
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
+  const [userData, setUserData] = useState(initialUserData);
 
   const handleChange = useCallback(
     (e) => {
@@ -24,15 +29,57 @@ const Nav = () => {
     [navigate]
   );
 
+  const handleScroll = useCallback(() => {
+    if (window.scrollY > 50) {
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+  }, []);
+
+  const handleAuth = useCallback(() => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        setUserData(result.user);
+        localStorage.setItem("userData", JSON.stringify(result.user));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  // const handleSignOut = () => {
+  //   signOut(auth)
+  //     .then(() => {
+  //       setUserData({});
+  //       navigate(`/`);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      // 인증된 유저일 경우 로그인 페이지 대신 메인페이지로 "바로"이동
+      if (user) {
+        if (pathname === "/") {
+          navigate("/main");
+        }
+      } else {
+        navigate("/");
+      }
+    });
+  }, [auth, navigate, pathname]);
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [handleScroll]);
+  }, []);
 
   return (
-    <NavWrapper show={handleShow}>
+    <NavWrapper show={show}>
       <Logo>
         <img
           alt="Disney Plus Logo"
@@ -42,7 +89,7 @@ const Nav = () => {
       </Logo>
 
       {pathname === "/" ? (
-        <LoginStyle>Login</LoginStyle>
+        <LoginStyle onClick={() => handleAuth()}>Login</LoginStyle>
       ) : (
         <InputStyle
           value={searchValue}
@@ -58,28 +105,28 @@ const Nav = () => {
 
 export default Nav;
 
-const NavWrapper = styled.div`
+const NavWrapper = styled.nav`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   height: 70px;
+  background-color: ${(props) => (props.show ? "#090b13" : "transparent")};
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 36px;
   letter-spacing: 16px;
-  background-color: ${(props) => (props.show ? "#090b13" : "transparent")};
   z-index: 3;
 `;
 
-const Logo = styled.div`
-  display: inline-block;
-  width: 80px;
-  max-height: 70px;
-  margin-top: 4px;
+const Logo = styled.a`
   padding: 0;
-  font-size: 0px;
+  width: 80px;
+  margin-top: 4px;
+  max-height: 70px;
+  font-size: 0;
+  diplay: inline-block;
 
   img {
     display: block;
@@ -106,6 +153,7 @@ const LoginStyle = styled.a`
   border: 1px solid #f9f9f9;
   border-radius: 4px;
   trabsition: all 0.3s ease 0s;
+  cursor: pointer;
 
   &:hover {
     border-color: tran;
