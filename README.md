@@ -23,4 +23,6 @@
 - customHooks: useDebounce
 - API Key, Fetch, try-catch
 - swiper
+- login and out 기능
+- localStorage에 정보 저장
 - firebase 배포

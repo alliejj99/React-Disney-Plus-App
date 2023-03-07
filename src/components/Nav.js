@@ -14,13 +14,14 @@ const Nav = () => {
     ? JSON.parse(localStorage.getItem("userData"))
     : {};
 
-  const [show, setShow] = useState(false);
   const { pathname } = useLocation();
+  const [show, setShow] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [userData, setUserData] = useState(initialUserData);
+
   const navigate = useNavigate();
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
-  const [userData, setUserData] = useState(initialUserData);
 
   const handleChange = useCallback(
     (e) => {
