@@ -182,19 +182,24 @@ const DropDown = styled.div`
   position: absolute;
   top: 48px;
   right: 0px;
+  width: 100%;
+  font-size: 14px;
+  letter-spacing: 3px;
   padding: 10px;
-  background-color: rgb(19, 19, 19);
+  background-color: rgba(19, 19, 19, 0.8);
   border: 1px solid rgba(151, 151, 151, 0.34);
   border-radius: 4px;
   box-shadow: rgb(0 0 0 /50%) 0px 0px 18px 0px;
+  opacity: 0;
 `;
+
 const SignOut = styled.div`
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 35px;
+  height: 35px;
   cursor: pointer;
 
   &:hover {
