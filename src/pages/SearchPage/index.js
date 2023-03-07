@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useDebounce } from "../../hooks/useDebounce";
 import axios from "../../api/axios";
 import "./SearchPage.css";
 
@@ -8,6 +9,7 @@ const SearchPage = () => {
   const navigate = useNavigate();
 
   const searchTerm = new URLSearchParams(useLocation().search);
+  const debounceSearchTerm = useDebounce(searchTerm, 500);
 
   const fetchSearchMovies = useCallback(async (queryData) => {
     try {
@@ -21,10 +23,10 @@ const SearchPage = () => {
   }, []);
 
   useEffect(() => {
-    if (searchTerm) {
-      fetchSearchMovies(searchTerm);
+    if (debounceSearchTerm) {
+      fetchSearchMovies(debounceSearchTerm);
     }
-  }, [fetchSearchMovies, searchTerm]);
+  }, [fetchSearchMovies, debounceSearchTerm]);
 
   return (
     <React.Fragment>
@@ -54,7 +56,7 @@ const SearchPage = () => {
       ) : (
         <section className="no-results">
           <div className="no-results-text">
-            <p>검색한 "{searchTerm && searchTerm}" 제목의 영화는 없습니다.</p>
+            <p>검색한 "{searchTerm}" 제목의 영화는 없습니다.</p>
           </div>
         </section>
       )}
